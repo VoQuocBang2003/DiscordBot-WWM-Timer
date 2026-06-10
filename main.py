@@ -973,12 +973,14 @@ async def start_health_server():
         print(f"Health server failed to start: {e}")
 
 # schedule health server to start in the bot's event loop so Render sees a bound port
-try:
-    bot.loop.create_task(start_health_server())
-except Exception as e:
-    print(f"Failed to schedule health server task: {e}")
+async def main():
+    # chạy web server trước
+    await start_health_server()
+    # rồi mới chạy bot
+    await bot.start(TOKEN)
 
-bot.run(TOKEN)
+import asyncio
+asyncio.run(main())
 
 
 @bot.event
