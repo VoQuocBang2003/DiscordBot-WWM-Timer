@@ -959,10 +959,10 @@ async def timer(ctx, mode: str, index: int = None):
 
 async def start_health_server():
     async def handle(request):
-        return web.Response(text="OK")
+        return web.Response(text="Bot is alive")
     app = web.Application()
     app.router.add_get("/", handle)
-    port = int(os.environ.get("PORT", "8000"))
+    port = int(os.environ.get("PORT", "3000"))
     runner = web.AppRunner(app)
     try:
         await runner.setup()
