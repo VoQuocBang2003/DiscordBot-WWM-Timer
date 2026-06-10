@@ -892,17 +892,23 @@ async def jointimer(ctx, index: int = None):
         return
 
     # connect
+    if not bot.is_ready():
+        print("Bot chưa ready")
+        return
     existing_vc = discord.utils.get(bot.voice_clients, guild=target.guild)
     if existing_vc and existing_vc.channel.id == target.id and existing_vc.is_connected():
         await ctx.send(f"Đã kết nối tới **{target.name}**")
         return
-    try:
-        await target.connect()
-        await ctx.send(f"Bot đã vào kênh **{target.name}**")
-    except Exception as e:
-        await ctx.send(f"Không thể kết nối: {e}")
-        print(f"jointimer connect error: {e}")
-        traceback.print_exc()
+    for i in range(3):
+        try:
+            vc = await target.connect(timeout=20, reconnect=True)
+            break
+        except Exception as e:
+            print(f"[VOICE] Attempt {i+1} failed: {e}")
+            await asyncio.sleep(2)
+    else:
+        print("[VOICE] Không connect được voice")
+        return
 
 
 @bot.command()
@@ -957,30 +963,23 @@ async def timer(ctx, mode: str, index: int = None):
     else:
         await ctx.send("Sử dụng: `!timer on [index]` hoặc `!timer off`")
 
+
 async def start_health_server():
     async def handle(request):
         return web.Response(text="Bot is alive")
+
     app = web.Application()
     app.router.add_get("/", handle)
+
     port = int(os.environ.get("PORT", "3000"))
+
     runner = web.AppRunner(app)
-    try:
-        await runner.setup()
-        site = web.TCPSite(runner, "0.0.0.0", port)
-        await site.start()
-        print(f"Health server listening on 0.0.0.0:{port}")
-    except Exception as e:
-        print(f"Health server failed to start: {e}")
+    await runner.setup()
 
-# schedule health server to start in the bot's event loop so Render sees a bound port
-async def main():
-    # chạy web server trước
-    await start_health_server()
-    # rồi mới chạy bot
-    await bot.start(TOKEN)
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
 
-import asyncio
-asyncio.run(main())
+    print(f"Health server listening on 0.0.0.0:{port}")
 
 
 @bot.event
@@ -1007,3 +1006,14 @@ async def on_message(message):
         return
 
     await bot.process_commands(message)
+
+
+async def main():
+    await asyncio.gather(
+        start_health_server(),   # web server
+        bot.start(TOKEN)         # discord bot
+    )
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
