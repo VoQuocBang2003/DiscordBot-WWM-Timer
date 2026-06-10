@@ -406,7 +406,7 @@ async def play_sound(filename, channel_or_id=None, force_pcm=False):
     # attempt Opus encoding with ffmpeg (outputs an opus stream directly)
     if not force_pcm and _opus and _opus.is_loaded():
         try:
-            opus_opts = "-vn -ac 2 -ar 48000 -f opus"
+            opus_opts = "-vn -f opus"
             if ffmpeg_exe:
                 ff_src = discord.FFmpegOpusAudio(path, executable=ffmpeg_exe, before_options=before_opts, options=opus_opts)
             else:
@@ -420,7 +420,7 @@ async def play_sound(filename, channel_or_id=None, force_pcm=False):
     if not using_opus_audio:
         try:
             # Explicitly request pcm_s16le codec and canonical sample rate/channels
-            options = "-vn -ac 2 -ar 48000 -f s16le -acodec pcm_s16le"
+            options = "-vn -f s16le -acodec pcm_s16le"
             if ffmpeg_exe:
                 ff_src = discord.FFmpegPCMAudio(path, executable=ffmpeg_exe, before_options=before_opts, options=options)
             else:
