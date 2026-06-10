@@ -13,6 +13,7 @@ import shutil
 import json
 
 from dotenv import load_dotenv
+from aiohttp import web
 
 load_dotenv()
 
@@ -955,6 +956,27 @@ async def timer(ctx, mode: str, index: int = None):
             await ctx.send("Timer đã tắt (không chạy).")
     else:
         await ctx.send("Sử dụng: `!timer on [index]` hoặc `!timer off`")
+
+async def start_health_server():
+    async def handle(request):
+        return web.Response(text="OK")
+    app = web.Application()
+    app.router.add_get("/", handle)
+    port = int(os.environ.get("PORT", "8000"))
+    runner = web.AppRunner(app)
+    try:
+        await runner.setup()
+        site = web.TCPSite(runner, "0.0.0.0", port)
+        await site.start()
+        print(f"Health server listening on 0.0.0.0:{port}")
+    except Exception as e:
+        print(f"Health server failed to start: {e}")
+
+# schedule health server to start in the bot's event loop so Render sees a bound port
+try:
+    bot.loop.create_task(start_health_server())
+except Exception as e:
+    print(f"Failed to schedule health server task: {e}")
 
 bot.run(TOKEN)
 

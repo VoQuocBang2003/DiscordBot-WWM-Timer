@@ -3,4 +3,6 @@ PyNaCl==1.6.2
 pytz
 python-dotenv
 davey
+# HTTP health endpoint for Render web service
+aiohttp
 # Note: ffmpeg is a system dependency (not a pip package). Install ffmpeg separately and set FFMPEG_PATH if needed.
