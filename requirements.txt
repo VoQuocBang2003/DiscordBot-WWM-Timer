@@ -1,0 +1,6 @@
+discord.py
+PyNaCl==1.6.2
+pytz
+python-dotenv
+davey
+# Note: ffmpeg is a system dependency (not a pip package). Install ffmpeg separately and set FFMPEG_PATH if needed.

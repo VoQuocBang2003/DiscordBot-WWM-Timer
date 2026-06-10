@@ -1,0 +1,69 @@
+[
+  {
+    "day": 5,
+    "time": "19:32:00",
+    "sound": "welcome.ogg",
+    "enabled": true
+  },
+  {
+    "day": 5,
+    "time": "19:34:30",
+    "sound": "30sec.ogg",
+    "enabled": true
+  },
+  {
+    "day": 5,
+    "time": "19:39:00",
+    "sound": "1minute.ogg",
+    "enabled": true
+  },
+  {
+    "day": 5,
+    "time": "19:44:00",
+    "sound": "1minute.ogg",
+    "enabled": true
+  },
+  {
+    "day": 5,
+    "time": "19:49:00",
+    "sound": "1minute.ogg",
+    "enabled": true
+  },
+  {
+    "day": 6,
+    "time": "19:32:00",
+    "sound": "welcome.ogg",
+    "enabled": true
+  },
+  {
+    "day": 6,
+    "time": "19:34:30",
+    "sound": "30sec.ogg",
+    "enabled": true
+  },
+  {
+    "day": 6,
+    "time": "19:39:00",
+    "sound": "1minute.ogg",
+    "enabled": true
+  },
+  {
+    "day": 6,
+    "time": "19:44:00",
+    "sound": "1minute.ogg",
+    "enabled": true
+  },
+  {
+    "day": 6,
+    "time": "19:49:00",
+    "sound": "1minute.ogg",
+    "enabled": true
+  },
+  {
+    "enabled": false,
+    "date": "2026-06-10",
+    "time": "15:51:00",
+    "sound": "welcome.ogg",
+    "channel_id": 1513851633602138274
+  }
+]
